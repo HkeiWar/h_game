@@ -4,6 +4,8 @@ out_dir := out
 WORK_NAME := demo
 woke_dir := /woke/c_woke/demo
 window_ml_dir := \woke\c_woke\demo
+disk := D:
+assets := assets
 
 # sdl
 sdl_path := ${woke_dir}/lib/SDL
@@ -18,11 +20,11 @@ srcs := $(wildcard *.c ${src_dir}/*.c)
 objs := $(patsubst %c, %o, $(srcs))
 
 
-
 build : ${objs}
 	${cc} -o ${out_dir}/${WORK_NAME}.exe ${objs} -L${sdl_lib} ${sdl_config}
-	cd ${sdl_path}/bin && copy SDL2.dll D:${window_ml_dir}\${out_dir}
-
+	cd ${sdl_path}/bin && copy SDL2.dll ${disk}${window_ml_dir}\${out_dir}
+	cd ${disk}${window_ml_dir}\${out_dir} && mkdir ${assets}
+	copy ${assets} ${disk}${window_ml_dir}\${out_dir}\${assets}
 %.o : %.c
 	${cc} -c -I${sdl_include} $< -o $@ 
 
@@ -36,4 +38,6 @@ echo:
 
 clean :
 	cd ${src_dir} &&  del /Q *.o
-	cd ${out_dir} && del /Q *
+	rd /s/Q out
+	mkdir out
+	

@@ -1,19 +1,41 @@
+#include <string.h>
 #include "SDL.h"
-extern int printf1();
+
+/**
+ * 加载图片
+ **/
+SDL_Texture * Load_Imgage(SDL_Renderer * renderer,const char * text)
+{
+    SDL_Surface * bmp = NULL;
+    bmp = SDL_LoadBMP(text);
+    if(!bmp){
+        return NULL;
+    }
+    return SDL_CreateTextureFromSurface(renderer,bmp);
+}
+
 int main( int argc, char* args[] ) 
 { 
-    // SDL_Surface* hello = NULL;
+    
     SDL_Window * screen = NULL;
+    SDL_Renderer * renderer = NULL;
+    SDL_Texture * t = NULL;
+    
     // //启动SDL
     SDL_Init( SDL_INIT_EVERYTHING );
     
-    // hello = SDL_LoadBMP("");
+    
+    screen = SDL_CreateWindow("test",SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, 0);
+    renderer = SDL_CreateRenderer(screen,-1,SDL_RENDERER_ACCELERATED);
+    t = Load_Imgage(renderer,"assets\\test.bmp");
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer,t,NULL,NULL);
+    SDL_RenderPresent(renderer);
+    SDL_Delay(20000);
+    SDL_DestroyTexture(t);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(screen);
 
-    screen = SDL_CreateWindow("SDL2 Displaying Image",
-                SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, 0);
-
-    printf1();
-    SDL_Delay(2000);
     // //退出SDL 
     SDL_Quit();
     return 0;
