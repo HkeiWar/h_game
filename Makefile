@@ -11,7 +11,7 @@ assets := assets
 sdl_path := ${woke_dir}/lib/SDL
 sdl_include := ${sdl_path}/include/SDL2
 sdl_lib := ${sdl_path}/lib
-sdl_config := -lmingw32 -lSDL2main -lSDL2 
+sdl_config := -lmingw32 -lSDL2main -lSDL2
 
 # sdl_image
 sdl_image_path := ${woke_dir}/lib/SDL_image
@@ -30,21 +30,20 @@ vpath %.o ${src_dir}
 srcs := $(wildcard *.c ${src_dir}/*.c)
 objs := $(patsubst %c, %o, $(srcs))
 
-
-build : ${objs}
-	${cc} -o ${out_dir}/${WORK_NAME}.exe ${objs} $(addprefix -L,$(base_lib)) ${base_op}
+install : ${WORK_NAME}
 	cd ${sdl_path}/bin && copy SDL2.dll ${disk}${window_ml_dir}\${out_dir}
+	cd ${sdl_image_path}/bin && copy SDL2_image.dll ${disk}${window_ml_dir}\${out_dir}
 	cd ${disk}${window_ml_dir}\${out_dir} && mkdir ${assets}
 	copy ${assets} ${disk}${window_ml_dir}\${out_dir}\${assets}
+
+${WORK_NAME} : ${objs}
+	${cc} -o ${out_dir}/${WORK_NAME} ${objs} $(addprefix -L,$(base_lib)) ${base_op}
 
 %.o : %.c
 	${cc} -c $(addprefix -I,$(base_include)) $< -o $@ 
 
 run : ${out_dir}/${WORK_NAME}.exe
 	${out_dir}/${WORK_NAME}.exe
-
-echo:
-	echo ${objs}
 
 .PHONY : clean
 
