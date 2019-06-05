@@ -32,7 +32,7 @@ objs := $(patsubst %c, %o, $(srcs))
 
 install : ${WORK_NAME}
 	cd ${sdl_path}/bin && copy SDL2.dll ${disk}${window_ml_dir}\${out_dir}
-	cd ${sdl_image_path}/bin && copy SDL2_image.dll ${disk}${window_ml_dir}\${out_dir}
+	cd ${sdl_image_path}/bin && copy *.dll ${disk}${window_ml_dir}\${out_dir}
 	cd ${disk}${window_ml_dir}\${out_dir} && mkdir ${assets}
 	copy ${assets} ${disk}${window_ml_dir}\${out_dir}\${assets}
 
